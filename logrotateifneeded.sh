@@ -10,7 +10,6 @@ source $scriptdir/redirectlog.src.sh
 lf=$1
 
 if [ ! -f "$lf" ]; then
-	echo "file \"$lf\" doesn't exist."
 	exit 1
 fi
 
