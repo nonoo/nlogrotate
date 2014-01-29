@@ -2,10 +2,8 @@
 
 scriptname=`basename $0`
 scriptdir=${0/$scriptname/}
-logfile=$scriptdir/logrotate.log
 
 source $scriptdir/config
-source $scriptdir/redirectlog.src.sh
 
 lf=$1
 
@@ -31,5 +29,3 @@ done
 echo "  moving $lf to $lf.0"
 mv $lf $lf.0
 echo "  done."
-
-$scriptdir/../logrotate/logrotateifneeded.sh $logfile
