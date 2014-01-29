@@ -19,13 +19,19 @@ if [ ! -d $logdir ]; then
 fi
 
 logpipe=/tmp/$scriptname.pipe
-rm -f $logpipe
-# Setting up a trap to delete the pipe on exit
-trap "rm -f $logpipe" EXIT
+if [ -e $logpipe.pid ]; then
+	kill -9 `cat $logpipe.pid` &>/dev/null
+fi
+rm -f $logpipe*
 # Creating pipe
 mknod $logpipe p
 # Reading from the log pipe and processing it.
 awk '{ print strftime("[%Y/%m/%d %H:%M:%S]"), $0; }' $logpipe >> $logfile &
+awkpid=$!
+echo $awkpid > $logpipe.pid
+# Setting up a trap to delete the pipe on exit
+trap "kill -9 $awkpid" INT TERM EXIT
+trap "rm -f $logpipe*" INT TERM EXIT
 # Closing stdout
 exec 1>&-
 # Redirecting stdout to the pipe
