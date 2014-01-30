@@ -12,7 +12,7 @@ if [ -z "$logfile" ]; then
 fi
 
 checklogsize() {
-	if [ $quietmode -ne 1 ]; then
+	if [ "$quietmode" != "1" ]; then
 		return
 	fi
 
@@ -24,7 +24,7 @@ checklogsize() {
 }
 
 redirectlog() {
-	if [ $quietmode -ne 1 ]; then
+	if [ "$quietmode" != "1" ]; then
 		return
 	fi
 
