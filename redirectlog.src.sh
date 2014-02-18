@@ -35,7 +35,7 @@ redirectlog() {
 		chmod -f o+w $logdir
 	fi
 
-	logpipe=/tmp/$scriptname.pipe
+	logpipe=`echo $logfile | cut -f1 -d'.'`.pipe
 	if [ -e $logpipe.pid ]; then
 		kill -9 `cat $logpipe.pid` &>/dev/null
 	fi
