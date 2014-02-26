@@ -3,8 +3,7 @@ logrotate
 
 A simple logrotate shell script I use in embedded enviroments.
 
-logrotateifneeded.sh
---------------------
+#### logrotateifneeded.sh
 Rotates the file given in the first parameter if it's size is greater than
 $maxlogsizeinkb, which can be set in logrotate's config. If a second parameter
 is given, then copytruncate is used: it truncates the original log file to
@@ -16,13 +15,11 @@ between copying the file and truncating it, so some logging data might be
 lost. When this option is used, the create option will have no effect, as
 the old log file stays in place.
 
-logrotate.sh
-------------
+#### logrotate.sh
 Rotates the file given in the first parameter. If a second parameter is given,
 then copytruncate is used (see logrotateifneeded.sh for explanation).
 
-redirectlog.src.sh
-------------------
+#### redirectlog.src.sh
 This script should be sourced from other scripts which print log messages to
 the standard output. If $quietmode is set, and redirectlog() is called, it
 will redirect stdout to the file specified in $logfile and timestamps every
@@ -39,3 +36,21 @@ Optional variables:
 $logcopytruncate: if set to 1, log rotation will be done in the copytruncate
 way (see the description of logrotateifneeded.sh).
 $quietmode: if set other than 1, redirectlog.src.sh functions do nothing.
+
+#### Example usage
+```bash
+#!/bin/sh
+
+logrotateifneeded=logrotate/logrotateifneeded.sh
+logfile=test.log
+
+source logrotate/redirectlog.src.sh
+
+#logcopytruncate=1
+quietmode=1
+redirectlog
+
+echo test123
+
+checklogsize
+```
