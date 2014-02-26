@@ -35,5 +35,5 @@ else
 	cp $lf $lf.0
 	echo "  truncating $lf"
 	truncate -s 0 $lf
-done
+fi
 echo "  done."
