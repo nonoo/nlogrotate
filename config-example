@@ -1,3 +1,4 @@
 maxlogsizeinkb=1024
+# Keepcount is the number of archived log files to keep.
 keepcount=4
 du=/usr/bin/du

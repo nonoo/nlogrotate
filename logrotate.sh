@@ -12,13 +12,20 @@ if [ ! -f "$lf" ]; then
 	exit 1
 fi
 
-echo "rotating $lf..."
-if [ -f $lf.$keepcount ]; then
-	echo "  removing $lf.$keepcount"
-	rm $lf.$keepcount
+if [ $keepcount -lt 1 ]; then
+	echo "keepcount is $keepcount, no need to rotate."
+	exit 0
 fi
 
-i=$((keepcount - 1))
+lastcount=$((keepcount - 1))
+
+echo "rotating $lf..."
+if [ -f $lf.$lastcount ]; then
+	echo "  removing $lf.$lastcount"
+	rm $lf.$lastcount
+fi
+
+i=$((lastcount - 1))
 while [ $i -ge 0 ]; do
 	if [ -f $lf.$i ]; then
 		echo "  moving $lf.$i to $lf.$((i + 1))"
