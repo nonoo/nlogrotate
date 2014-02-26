@@ -11,16 +11,6 @@ if [ -z "$logrotateifneeded" ] || [ ! -f "$logrotateifneeded" ]; then
 	exit 1
 fi
 
-if [ ! -d "$logdir" ]; then
-	echo "redirectlog error: no logdir given."
-	exit 1
-fi
-
-if [ -z "$logpipe" ]; then
-	echo "redirectlog error: no logpipe name given."
-	exit 1
-fi
-
 checklogsize() {
 	if [ "$quietmode" != "1" ]; then
 		return
