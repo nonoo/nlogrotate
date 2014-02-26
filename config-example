@@ -1,3 +1,3 @@
 maxlogsizeinkb=1024
 keepcount=4
-logfile=/tmp/tmpfs/log/logrotate.log
+du=/usr/bin/du
