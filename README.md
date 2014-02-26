@@ -29,9 +29,13 @@ will redirect stdout to the file specified in $logfile and timestamps every
 line. checklogsize() should be called periodically, which runs
 logrotateifneeded.sh.
 
-You have to set the following variables before sourcing the script and
-calling redirectlog():
+You have to set the following variables before sourcing the script:
 
-$quietmode: if set other than 1, redirectlog.src.sh functions do nothing.
 $logfile: name of the logfile to redirect stdout to.
 $logrotateifneeded: path to the logrotateifneeded.sh script.
+
+Optional variables:
+
+$logcopytruncate: if set to 1, log rotation will be done in the copytruncate
+way (see the description of logrotateifneeded.sh).
+$quietmode: if set other than 1, redirectlog.src.sh functions do nothing.

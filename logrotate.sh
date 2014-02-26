@@ -6,7 +6,7 @@ scriptdir=${0/$scriptname/}
 source $scriptdir/config
 
 lf=$1
-copytruncate=$2
+logcopytruncate=$2
 
 if [ ! -f "$lf" ]; then
 	exit 1
@@ -27,7 +27,7 @@ while [ $i -ge 0 ]; do
 	i=$((i - 1))
 done
 
-if [ -z "$copytruncate" ]; then
+if [ -z "$logcopytruncate" ]; then
 	echo "  moving $lf to $lf.0"
 	mv $lf $lf.0
 else

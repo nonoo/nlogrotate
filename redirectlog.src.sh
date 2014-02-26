@@ -16,10 +16,13 @@ checklogsize() {
 		return
 	fi
 
-	$logrotateifneeded $logfile
-	# If logrotate happened, the exit code of the script is 0.
-	if [ $? -eq 0 ]; then
-		redirectlog
+	$logrotateifneeded $logfile $logcopytruncate
+	logrotateifneededresult=$?
+	if [ -z "$logcopytruncate" ]; then
+		# If logrotate happened, the exit code of the script is 0.
+		if [ $logrotateifneededresult -eq 0 ]; then
+			redirectlog
+		fi
 	fi
 }
 
