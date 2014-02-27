@@ -12,7 +12,7 @@ if [ ! -f "$lf" ]; then
 	exit 2
 fi
 
-if [ `$du --apparent-size $lf | awk '{print $1}'` -gt $maxlogsizeinkb ]; then
+if [ `$du $lf | awk '{print $1}'` -gt $maxlogsizeinkb ]; then
 	echo "logfile \"$lf\" is over size, needs rotating."
 	$scriptdir/logrotate.sh $lf $logcopytruncate
 
