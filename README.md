@@ -3,6 +3,8 @@ nlogrotate
 
 A simple logrotate shell script I use in embedded enviroments.
 
+Note: you'll need gawk for the script to run correctly.
+
 #### logrotateifneeded.sh
 Rotates the file given in the first parameter if it's size is greater than
 *$maxlogsizeinkb*, which can be set in logrotate's config.
@@ -40,6 +42,9 @@ way (see the description of *logrotateifneeded.sh*).
 - *$quietmode*: if set other than 1, *redirectlog.src.sh* functions do nothing.
 
 #### Example usage
+
+Copy *config-example* to *config*, and then run this script:
+
 ```bash
 #!/bin/sh
 
