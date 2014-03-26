@@ -28,7 +28,7 @@ will redirect stdout to the file specified in *$logfile* and timestamps every
 line. *checklogsize()* should be called periodically, which runs
 *logrotateifneeded.sh*.
 
-You have to set the following variable before sourcing the script:
+You have to set the following variables before sourcing the script:
 
 - *$nlogrotatepath*: path to nlogrotate.
 - *$logfile*: logfile when quiet mode is on.
