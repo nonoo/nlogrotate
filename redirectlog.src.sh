@@ -1,12 +1,18 @@
-# This script redirects stdout to a file and timestamps every line.
 # The script should be sourced, not executed directly.
+
+if [ -z "$nlogrotatepath" ] || [ ! -d "$nlogrotatepath" ]; then
+	echo "redirectlog error: nlogrotate path not found."
+	exit 1
+fi
 
 if [ -z "$logfile" ]; then
 	echo "redirectlog error: no logfile name given."
 	exit 1
 fi
 
-if [ -z "$logrotateifneeded" ] || [ ! -f "$logrotateifneeded" ]; then
+logrotateifneededscript=$nlogrotatepath/logrotateifneeded.sh
+
+if [ -z "$logrotateifneededscript" ] || [ ! -f "$logrotateifneededscript" ]; then
 	echo "redirectlog error: no logrotateifneeded script found."
 	exit 1
 fi
@@ -16,31 +22,32 @@ checklogsize() {
 		return
 	fi
 
-	$logrotateifneeded $logfile $logcopytruncate
-	logrotateifneededresult=$?
+	$logrotateifneededscript $logfile $logcopytruncate
+	local logrotateifneededresult=$?
 	if [ -z "$logcopytruncate" ]; then
 		# If logrotate happened, the exit code of the script is 0.
+		# When not using logcopytruncate, we have to reinit stdout redirection.
 		if [ $logrotateifneededresult -eq 0 ]; then
 			redirectlog
 		fi
 	fi
 }
 
+# This function redirects stdout to a file and timestamps every line.
 redirectlog() {
 	if [ "$quietmode" != "1" ]; then
 		return
 	fi
 
 	# Creating the directory for the logfile if it doesn't exist
-	logdir=`dirname $logfile`
+	local logdir=`dirname $logfile`
 	if [ ! -d $logdir ]; then
 		mkdir -p $logdir
-		chmod -f o+w $logdir
 	fi
 
-	logpipe=`echo $logfile | cut -f1 -d'.'`.pipe
+	local logpipe=`echo $logfile | cut -f1 -d'.'`.pipe
 	if [ -e $logpipe.pid ]; then
-		kill -9 `cat $logpipe.pid` &>/dev/null
+		kill -9 `cat $logpipe.pid`
 	fi
 	rm -f $logpipe*
 
@@ -49,15 +56,14 @@ redirectlog() {
 
 	# Reading from the log pipe and processing it.
 	awk '{ print strftime("[%Y/%m/%d %H:%M:%S]"), $0; }' $logpipe >> $logfile &
-	awkpid=$!
+	local awkpid=$!
 	echo $awkpid > $logpipe.pid
-
-	# Setting up a trap to delete the pipe on exit
-	trap "kill -9 $awkpid" INT TERM EXIT
-	trap "rm -f $logpipe*" INT TERM EXIT
 
 	# Closing stdout
 	exec 1>&-
+
+	# Setting up a trap to delete the pipe on exit
+	trap "rm -f $logpipe*" INT TERM EXIT
 
 	# Redirecting stdout to the pipe
 	exec 1>$logpipe

@@ -1,9 +1,9 @@
 #!/bin/sh
 
 scriptname=`basename $0`
-scriptdir=${0/$scriptname/}
+scriptdir=${0%$scriptname}
 
-source $scriptdir/config
+. $scriptdir/config
 
 lf=$1
 logcopytruncate=$2

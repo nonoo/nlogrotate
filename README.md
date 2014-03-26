@@ -1,5 +1,5 @@
-logrotate
-=========
+nlogrotate
+==========
 
 A simple logrotate shell script I use in embedded enviroments.
 
@@ -28,10 +28,10 @@ will redirect stdout to the file specified in *$logfile* and timestamps every
 line. *checklogsize()* should be called periodically, which runs
 *logrotateifneeded.sh*.
 
-You have to set the following variables before sourcing the script:
+You have to set the following variable before sourcing the script:
 
-- *$logfile*: name of the logfile to redirect stdout to.
-- *$logrotateifneeded*: path to the logrotateifneeded.sh script.
+- *$nlogrotatepath*: path to nlogrotate.
+- *$logfile*: logfile when quiet mode is on.
 
 Optional variables:
 
@@ -43,10 +43,10 @@ way (see the description of *logrotateifneeded.sh*).
 ```bash
 #!/bin/sh
 
-logrotateifneeded=logrotate/logrotateifneeded.sh
+nlogrotatepath=/opt/nlogrotate
 logfile=test.log
 
-source logrotate/redirectlog.src.sh
+. $nlogrotatepath/redirectlog.src.sh
 
 #logcopytruncate=1
 quietmode=1
