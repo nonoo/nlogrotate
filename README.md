@@ -43,21 +43,27 @@ way (see the description of *logrotateifneeded.sh*).
 
 #### Example usage
 
-Copy *config-example* to *config*, and then run this script:
+Copy *config-example* to *config*, and then run this script with and without the
+"quiet" parameter:
 
 ```bash
 #!/bin/sh
 
-nlogrotatepath=/opt/nlogrotate
 logfile=test.log
+nlogrotatepath=/opt/nlogrotate
 
 . $nlogrotatepath/redirectlog.src.sh
 
 #logcopytruncate=1
-quietmode=1
-redirectlog
+
+if [ "$1" = "quiet" ]; then
+	quietmode=1
+	redirectlog
+fi
 
 echo test123
 
 checklogsize
 ```
+
+When quietmode is turned on, stdout will be redirected to the given logfile.
