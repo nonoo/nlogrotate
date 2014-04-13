@@ -45,7 +45,8 @@ redirectlog() {
 		mkdir -p $logdir
 	fi
 
-	local logpipe=`echo $logfile | cut -f1 -d'.'`.pipe
+	# The pipe's filename is the log file name without extension.
+	local logpipe=`echo $logfile | sed -r 's/\.[^\.]+$//'`.pipe
 	if [ -e $logpipe.pid ]; then
 		kill -9 `cat $logpipe.pid`
 	fi
