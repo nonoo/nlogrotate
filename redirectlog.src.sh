@@ -56,7 +56,7 @@ redirectlog() {
 	mknod $logpipe p
 
 	# Reading from the log pipe and processing it.
-	awk '{ print strftime("[%Y/%m/%d %H:%M:%S]"), $0; }' $logpipe >> $logfile &
+	stdbuf -i0 -o0 -e0 awk '{ print strftime("[%Y/%m/%d %H:%M:%S]"), $0; }' $logpipe >> $logfile &
 	local awkpid=$!
 	echo $awkpid > $logpipe.pid
 
